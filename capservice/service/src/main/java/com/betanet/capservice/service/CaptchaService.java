@@ -1,6 +1,7 @@
 package com.betanet.capservice.service;
 
 import com.betanet.capservice.domain.CaptchaEntity;
+import com.betanet.capservice.domain.CaptchaFontName;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -50,16 +51,31 @@ public class CaptchaService {
         return captchaString;
     }
     
+    private static void drawRotate(Graphics2D g2d, double x, double y, int angle, String text) 
+    {    
+        g2d.translate((float)x,(float)y);
+        g2d.rotate(Math.toRadians(angle));
+        g2d.drawString(text,0,0);
+        g2d.rotate(-Math.toRadians(angle));
+        g2d.translate(-(float)x,-(float)y);
+    }    
+    
     public BufferedImage generateImage(String text){
+        Random random = new Random(System.currentTimeMillis());
+        
         BufferedImage image = new BufferedImage(400, 40, BufferedImage.TYPE_BYTE_INDEXED);
         Graphics2D graphics = image.createGraphics();
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, 400, 40);
-        GradientPaint gradientPaint = new GradientPaint(10, 5, Color.BLUE, 20, 10, Color.LIGHT_GRAY, true);
+        GradientPaint gradientPaint = new GradientPaint(10, 5, Color.RED, 20, 10, Color.LIGHT_GRAY, true);
         graphics.setPaint(gradientPaint);
-        Font font = new Font("Comic Sans MS", Font.BOLD, 30);
-        graphics.setFont(font);
-        graphics.drawString(text, 5, 30);
+        
+        int fontCount = CaptchaFontName.values().length;
+        for(int i = 0; i < text.length(); i++){
+            graphics.setFont(new Font(CaptchaFontName.values()[random.nextInt(fontCount)].getFontName(), Font.BOLD, 20 + random.nextInt(10)));
+            drawRotate(graphics, 20 * (i+1), 30, -30 + random.nextInt(60), String.valueOf(text.charAt(i)));
+        }
+        
         graphics.dispose();
         return image;
     }
