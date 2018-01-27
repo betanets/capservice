@@ -8,6 +8,7 @@
     <modules>
         <module>web</module>
         <module>service</module>
+        <module>domain</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,6 +21,11 @@
     <dependencyManagement>
         <dependencies>
             <!-- Self project dependencies -->
+            <dependency>
+                <groupId>com.betanet.capservice</groupId>
+                <artifactId>domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.betanet.capservice</groupId>
                 <artifactId>service</artifactId>

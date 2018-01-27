@@ -22,5 +22,5 @@
     </bean>    
     
     <context:component-scan base-package="com.betanet.capservice.web"/>
-    <context:component-scan base-package="com.betanet.caoservice.service"/>
+    <context:component-scan base-package="com.betanet.capservice.service"/>
 </beans>

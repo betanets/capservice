@@ -1,11 +1,17 @@
 package com.betanet.capservice.service;
 
+import com.betanet.capservice.domain.CaptchaEntity;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import lombok.Getter;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +24,17 @@ public class CaptchaService {
     private final int CAPTCHA_LENGTH = 16;
     private final int CAPTCHA_RANGE = 21;
     
+    @Getter
+    private final List<CaptchaEntity> captchaEntities = new ArrayList<>();
+    
+    @Scheduled(fixedRate = 5000)
+    private void clearEntities(){
+        System.out.println("trytodel");
+        captchaEntities.stream().filter((entity) -> (entity.getExpirationDateTime().isBefore(LocalDateTime.now()))).forEachOrdered((entity) -> {
+            captchaEntities.remove(entity);
+        });
+    }
+        
     public String generateCaptchaString(){
         Random random = new Random(System.currentTimeMillis());
         String captchaString = "";
@@ -45,5 +62,20 @@ public class CaptchaService {
         graphics.drawString(text, 5, 30);
         graphics.dispose();
         return image;
+    }
+    
+    public CaptchaEntity findCaptchaEntity(String requestId, String captchaKey){
+        CaptchaEntity entityToFind = new CaptchaEntity(requestId, captchaKey, LocalDateTime.now());
+        for(CaptchaEntity entity : captchaEntities){
+            if(entity.getRequestId().equals(entityToFind.getRequestId())
+                    && entity.getCaptchaKey().equals(entityToFind.getCaptchaKey())){
+                if(entity.getExpirationDateTime().isAfter(entityToFind.getExpirationDateTime())){
+                    captchaEntities.remove(entity);
+                    return entity;
+                }
+                return null;
+            }
+        }
+        return null;
     }
 }
