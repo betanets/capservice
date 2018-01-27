@@ -10,15 +10,10 @@
     <artifactId>domain</artifactId>
     <packaging>jar</packaging>
     <dependencies>
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>5.0.2.RELEASE</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
 </project>

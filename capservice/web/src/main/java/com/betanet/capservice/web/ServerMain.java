@@ -36,12 +36,10 @@ public class ServerMain {
     private Handler getServletContextHandler(WebApplicationContext applicationContext) throws IOException {
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         contextHandler.setContextPath(CONTEXT_PATH);
-        //addSecurityFilter(contextHandler);
         DispatcherServlet servlet = new DispatcherServlet(applicationContext);
         servlet.setThrowExceptionIfNoHandlerFound(true);
         contextHandler.addServlet(new ServletHolder(servlet), MAPPING_URL);
         contextHandler.addEventListener(new ContextLoaderListener(applicationContext));
-        //contextHandler.getSessionHandler().setMaxInactiveInterval(SESSION_MAX_INACTIVE_INTERVAL);
         return contextHandler;
     }
 

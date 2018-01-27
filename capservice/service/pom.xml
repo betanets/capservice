@@ -10,21 +10,20 @@
     <artifactId>service</artifactId>
     <packaging>jar</packaging>
     <dependencies>
+        <!-- Internal project dependencies -->
         <dependency>
             <groupId>com.betanet.capservice</groupId>
             <artifactId>domain</artifactId>
         </dependency>
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-        </dependency>-->
     </dependencies>
 </project>
