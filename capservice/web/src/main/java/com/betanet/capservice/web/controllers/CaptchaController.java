@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class CaptchaController {
     
+    private final int CAPTCHA_TTL = 10;
+    
     @Autowired
     private CaptchaService captchaService;
     
@@ -34,15 +36,15 @@ public class CaptchaController {
         response.addHeader("request_id", md5CaptchaString);
         response.addHeader("captcha_string", captchaString);
         
-        response.setContentType("image/jpg");
+        response.setContentType("image/png");
         try {
             ServletOutputStream out = response.getOutputStream();
-            ImageIO.write(captchaService.generateImage(captchaString), "jpeg", out);
+            ImageIO.write(captchaService.generateImage(captchaString), "png", out);
             out.close();
         } catch (IOException ex) {
             System.out.println("Error while sending captcha");
         }
-        captchaService.getCaptchaEntities().add(new CaptchaEntity(md5CaptchaString, captchaString, LocalDateTime.now().plusSeconds(100)));
+        captchaService.getCaptchaEntities().add(new CaptchaEntity(md5CaptchaString, captchaString, LocalDateTime.now().plusSeconds(CAPTCHA_TTL)));
         System.out.println("ww: " + captchaService.getCaptchaEntities().size());
     }
     
