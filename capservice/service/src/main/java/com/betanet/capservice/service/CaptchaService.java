@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CaptchaService {
     
+    @Getter
     private final int CAPTCHA_LENGTH = 16;
     private final int CAPTCHA_RANGE = 21;
     
@@ -31,7 +32,6 @@ public class CaptchaService {
     
     @Scheduled(fixedRate = 5000)
     private void clearEntities(){
-        System.out.println("trytodel");
         Iterator it = captchaEntities.iterator();
         while(it.hasNext()){
             CaptchaEntity item = (CaptchaEntity) it.next();
